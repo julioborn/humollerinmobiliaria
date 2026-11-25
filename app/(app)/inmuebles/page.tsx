@@ -57,7 +57,7 @@ export default async function InmueblesPage() {
   ];
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <PageHeader title="Inmuebles" description="Propiedades administradas por la inmobiliaria." />
       <EntityManager
         entityLabel="Inmueble"

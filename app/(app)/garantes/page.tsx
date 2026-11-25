@@ -23,7 +23,7 @@ export default async function GarantesPage() {
   const { data: garantes } = await supabase.from("garantes").select("*").order("nombre");
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <PageHeader title="Garantes" description="Garantes asociados a los contratos de alquiler." />
       <EntityManager
         entityLabel="Garante"

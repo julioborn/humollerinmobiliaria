@@ -28,14 +28,17 @@ export default async function ContratosPage() {
   }));
 
   return (
-    <div>
-      <div className="flex items-start justify-between">
-        <PageHeader title="Contratos" description="Contratos de alquiler administrados." />
-        <Button render={<Link href="/contratos/nuevo" />} nativeButton={false}>
-          <Plus className="h-4 w-4" />
-          Nuevo contrato
-        </Button>
-      </div>
+    <div className="flex flex-col gap-6">
+      <PageHeader
+        title="Contratos"
+        description="Contratos de alquiler administrados."
+        action={
+          <Button render={<Link href="/contratos/nuevo" />} nativeButton={false}>
+            <Plus className="h-4 w-4" />
+            Nuevo contrato
+          </Button>
+        }
+      />
       <ContratosTable rows={rows} />
     </div>
   );

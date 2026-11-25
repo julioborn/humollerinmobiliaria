@@ -14,7 +14,7 @@ export default async function NuevoContratoPage() {
     ]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <PageHeader title="Nuevo contrato" description="Carga los datos del nuevo contrato de alquiler." />
       <ContratoForm
         action={createContrato}

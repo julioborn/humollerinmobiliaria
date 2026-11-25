@@ -40,7 +40,7 @@ export default async function ConfiguracionPage() {
 
   return (
     <div className="flex flex-col gap-10">
-      <div>
+      <div className="flex flex-col gap-6">
         <PageHeader
           title="Indices de referencia"
           description="Valores historicos de ICL / IPC usados para calcular las actualizaciones automaticas de los contratos."

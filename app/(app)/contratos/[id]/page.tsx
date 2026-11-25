@@ -90,7 +90,7 @@ export default async function ContratoDetailPage({
   }));
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <PageHeader
         title={`Contrato ${contrato.carpeta ?? ""}`.trim()}
         description={contrato.codigo ? `Codigo: ${contrato.codigo}` : undefined}

@@ -14,7 +14,7 @@ export type ActionPanelItem = {
 
 const metaBadgeVariant = {
   urgent: "destructive",
-  warning: "secondary",
+  warning: "warning",
 } as const;
 
 export function ActionPanel({
@@ -35,7 +35,7 @@ export function ActionPanel({
   return (
     <Card className="flex flex-col">
       <CardHeader className="flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-base font-semibold">{title}</CardTitle>
+        <CardTitle className="text-section-title">{title}</CardTitle>
         {totalCount > 0 && (
           <Badge variant="secondary" className="font-mono">
             {totalCount}

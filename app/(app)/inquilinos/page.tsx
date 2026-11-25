@@ -24,7 +24,7 @@ export default async function InquilinosPage() {
   const { data: inquilinos } = await supabase.from("inquilinos").select("*").order("nombre");
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <PageHeader title="Inquilinos" description="Personas que alquilan los inmuebles." />
       <EntityManager
         entityLabel="Inquilino"

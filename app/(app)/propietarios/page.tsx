@@ -29,7 +29,7 @@ export default async function PropietariosPage() {
     .order("nombre");
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <PageHeader title="Propietarios" description="Duenos de los inmuebles administrados." />
       <EntityManager
         entityLabel="Propietario"

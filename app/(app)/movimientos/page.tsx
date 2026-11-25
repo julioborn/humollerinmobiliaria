@@ -33,7 +33,7 @@ export default async function MovimientosPage() {
   }));
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <PageHeader title="Movimientos" description="Cobros, pagos, comisiones y gastos de todos los contratos." />
       <MovimientosManager rows={rows} contratoOptions={contratoOptions} />
     </div>
