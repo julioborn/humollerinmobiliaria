@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { diasRestantes, labelRelativo } from "@/lib/format";
 
 type ContratoRow = {
   id: string;
@@ -21,6 +22,7 @@ type ContratoRow = {
   monto_actual: number;
   moneda: string;
   estado: string;
+  fecha_fin: string | null;
   inmueble_direccion: string;
   inquilino_nombre: string;
   propietario_nombre: string;
@@ -31,6 +33,8 @@ const estadoVariant: Record<string, "default" | "secondary" | "destructive"> = {
   finalizado: "secondary",
   rescindido: "destructive",
 };
+
+const PRONTO_DIAS = 14;
 
 export function ContratosTable({ rows }: { rows: ContratoRow[] }) {
   const [search, setSearch] = useState("");
@@ -65,49 +69,75 @@ export function ContratosTable({ rows }: { rows: ContratoRow[] }) {
               <TableHead>Inquilino</TableHead>
               <TableHead>Propietario</TableHead>
               <TableHead>Monto vigente</TableHead>
+              <TableHead>Vence</TableHead>
               <TableHead>Estado</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                   Sin contratos.
                 </TableCell>
               </TableRow>
             )}
-            {filtered.map((row) => (
-              <TableRow key={row.id} className="cursor-pointer">
-                <TableCell>
-                  <Link href={`/contratos/${row.id}`} className="block">
-                    {row.carpeta || "-"}
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/contratos/${row.id}`} className="block">
-                    {row.inmueble_direccion}
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/contratos/${row.id}`} className="block">
-                    {row.inquilino_nombre}
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/contratos/${row.id}`} className="block">
-                    {row.propietario_nombre}
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/contratos/${row.id}`} className="block">
-                    {row.moneda} {row.monto_actual.toLocaleString("es-AR")}
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Badge variant={estadoVariant[row.estado] ?? "secondary"}>{row.estado}</Badge>
-                </TableCell>
-              </TableRow>
-            ))}
+            {filtered.map((row) => {
+              const dias = row.fecha_fin ? diasRestantes(row.fecha_fin) : null;
+              const prontoAVencer = row.estado === "activo" && dias !== null && dias <= PRONTO_DIAS;
+              return (
+                <TableRow key={row.id} className="cursor-pointer">
+                  <TableCell>
+                    <Link href={`/contratos/${row.id}`} className="block">
+                      {row.carpeta || "-"}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link href={`/contratos/${row.id}`} className="block">
+                      {row.inmueble_direccion}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link href={`/contratos/${row.id}`} className="block">
+                      {row.inquilino_nombre}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link href={`/contratos/${row.id}`} className="block">
+                      {row.propietario_nombre}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link href={`/contratos/${row.id}`} className="block">
+                      {row.moneda} {row.monto_actual.toLocaleString("es-AR")}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Link
+                      href={`/contratos/${row.id}`}
+                      className={
+                        prontoAVencer
+                          ? "flex items-center gap-1.5 font-semibold text-destructive"
+                          : "block text-muted-foreground"
+                      }
+                    >
+                      {row.fecha_fin
+                        ? new Date(`${row.fecha_fin}T00:00:00`).toLocaleDateString("es-AR", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                          })
+                        : "-"}
+                      {prontoAVencer && dias !== null && (
+                        <span className="text-xs">({labelRelativo(dias)})</span>
+                      )}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={estadoVariant[row.estado] ?? "secondary"}>{row.estado}</Badge>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

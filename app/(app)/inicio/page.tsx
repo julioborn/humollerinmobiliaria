@@ -83,7 +83,7 @@ export default async function InicioPage() {
       primary: c.inmuebles?.direccion ?? "Inmueble sin direccion",
       secondary: `Carpeta ${c.carpeta ?? "-"} · ${c.inquilinos?.nombre ?? "-"}`,
       meta: labelRelativo(dias),
-      metaTone: dias <= 3 ? "urgent" : "default",
+      metaTone: dias <= 3 ? "urgent" : "warning",
     };
   });
 
@@ -134,28 +134,41 @@ export default async function InicioPage() {
         description={todayLabel.charAt(0).toUpperCase() + todayLabel.slice(1)}
       />
 
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-lg border border-border bg-card px-5 py-3 text-sm">
-        <span>
-          <strong className="font-semibold">{inmueblesCount ?? 0}</strong>{" "}
-          <span className="text-muted-foreground">inmuebles</span>
-        </span>
-        <span className="h-4 w-px bg-border" />
-        <span>
-          <strong className="font-semibold">{contratosActivosCount ?? 0}</strong>{" "}
-          <span className="text-muted-foreground">contratos activos</span>
-        </span>
-        <span className="h-4 w-px bg-border" />
-        <span>
-          <strong className="font-semibold">{formatARS(totalPendienteCobro)}</strong>{" "}
-          <span className="text-muted-foreground">pendiente de cobro</span>
-        </span>
-        <span className="h-4 w-px bg-border" />
-        <span>
-          <strong className="font-semibold">{vencenCount ?? 0}</strong>{" "}
-          <span className="text-muted-foreground">
-            {pluralizar(vencenCount ?? 0, "contrato vence", "contratos vencen")} en 14 dias
+      <div className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-4">
+        <div className="flex flex-col gap-0.5 bg-card px-5 py-4">
+          <span className="text-2xl font-semibold tabular-nums">{inmueblesCount ?? 0}</span>
+          <span className="text-xs text-muted-foreground">Inmuebles</span>
+        </div>
+        <div className="flex flex-col gap-0.5 bg-card px-5 py-4">
+          <span className="text-2xl font-semibold tabular-nums">{contratosActivosCount ?? 0}</span>
+          <span className="text-xs text-muted-foreground">Contratos activos</span>
+        </div>
+        <div className="flex flex-col gap-0.5 bg-card px-5 py-4">
+          <span
+            className={
+              totalPendienteCobro > 0
+                ? "text-2xl font-semibold tabular-nums text-destructive"
+                : "text-2xl font-semibold tabular-nums"
+            }
+          >
+            {formatARS(totalPendienteCobro)}
           </span>
-        </span>
+          <span className="text-xs text-muted-foreground">Pendiente de cobro</span>
+        </div>
+        <div className="flex flex-col gap-0.5 bg-card px-5 py-4">
+          <span
+            className={
+              (vencenCount ?? 0) > 0
+                ? "text-2xl font-semibold tabular-nums text-destructive"
+                : "text-2xl font-semibold tabular-nums"
+            }
+          >
+            {vencenCount ?? 0}
+          </span>
+          <span className="text-xs text-muted-foreground">
+            {pluralizar(vencenCount ?? 0, "vence", "vencen")} en 14 dias
+          </span>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -184,7 +197,7 @@ export default async function InicioPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-semibold">Cobros de los ultimos 6 meses</CardTitle>
+          <CardTitle className="text-base font-semibold">Cobros de los ultimos 6 meses</CardTitle>
         </CardHeader>
         <CardContent>
           <MonthlyCollectionsChart data={chartData} />

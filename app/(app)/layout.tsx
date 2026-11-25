@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { TopTabs } from "@/components/top-tabs";
@@ -17,7 +18,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex h-screen flex-col">
       <header className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-primary px-6 text-primary-foreground">
-        <div className="flex items-center gap-3">
+        <Link href="/inicio" className="flex items-center gap-3">
           <Image
             src="/icono_simetrico_512x512.png"
             alt="Humoller Inmobiliaria"
@@ -26,7 +27,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             priority
           />
           <span className="text-base font-semibold">Humoller Inmobiliaria</span>
-        </div>
+        </Link>
         <UserMenu email={user.email ?? ""} />
       </header>
       <TopTabs />

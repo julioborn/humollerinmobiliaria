@@ -9,8 +9,13 @@ export type ActionPanelItem = {
   primary: string;
   secondary: string;
   meta: string;
-  metaTone?: "default" | "urgent";
+  metaTone?: "default" | "warning" | "urgent";
 };
+
+const metaBadgeVariant = {
+  urgent: "destructive",
+  warning: "secondary",
+} as const;
 
 export function ActionPanel({
   title,
@@ -30,7 +35,7 @@ export function ActionPanel({
   return (
     <Card className="flex flex-col">
       <CardHeader className="flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-sm font-semibold">{title}</CardTitle>
+        <CardTitle className="text-base font-semibold">{title}</CardTitle>
         {totalCount > 0 && (
           <Badge variant="secondary" className="font-mono">
             {totalCount}
@@ -51,15 +56,13 @@ export function ActionPanel({
               <span className="block truncate font-medium text-foreground">{item.primary}</span>
               <span className="block truncate text-xs text-muted-foreground">{item.secondary}</span>
             </span>
-            <span
-              className={
-                item.metaTone === "urgent"
-                  ? "shrink-0 text-xs font-medium text-destructive"
-                  : "shrink-0 text-xs font-medium text-muted-foreground"
-              }
-            >
-              {item.meta}
-            </span>
+            {item.metaTone === "urgent" || item.metaTone === "warning" ? (
+              <Badge variant={metaBadgeVariant[item.metaTone]} className="shrink-0">
+                {item.meta}
+              </Badge>
+            ) : (
+              <span className="shrink-0 text-sm font-semibold text-foreground">{item.meta}</span>
+            )}
           </Link>
         ))}
         <Link

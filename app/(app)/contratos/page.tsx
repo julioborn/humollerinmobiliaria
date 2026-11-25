@@ -10,7 +10,7 @@ export default async function ContratosPage() {
   const { data: contratos } = await supabase
     .from("contratos")
     .select(
-      "id, carpeta, codigo, monto_actual, moneda, estado, inmuebles(direccion), inquilinos(nombre), propietarios(nombre)",
+      "id, carpeta, codigo, monto_actual, moneda, estado, fecha_fin, inmuebles(direccion), inquilinos(nombre), propietarios(nombre)",
     )
     .order("created_at", { ascending: false });
 
@@ -21,6 +21,7 @@ export default async function ContratosPage() {
     monto_actual: c.monto_actual,
     moneda: c.moneda,
     estado: c.estado,
+    fecha_fin: c.fecha_fin,
     inmueble_direccion: c.inmuebles?.direccion ?? "-",
     inquilino_nombre: c.inquilinos?.nombre ?? "-",
     propietario_nombre: c.propietarios?.nombre ?? "-",
