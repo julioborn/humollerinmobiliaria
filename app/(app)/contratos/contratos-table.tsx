@@ -1,0 +1,116 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+type ContratoRow = {
+  id: string;
+  carpeta: string | null;
+  codigo: string | null;
+  monto_actual: number;
+  moneda: string;
+  estado: string;
+  inmueble_direccion: string;
+  inquilino_nombre: string;
+  propietario_nombre: string;
+};
+
+const estadoVariant: Record<string, "default" | "secondary" | "destructive"> = {
+  activo: "default",
+  finalizado: "secondary",
+  rescindido: "destructive",
+};
+
+export function ContratosTable({ rows }: { rows: ContratoRow[] }) {
+  const [search, setSearch] = useState("");
+
+  const filtered = useMemo(() => {
+    if (!search.trim()) return rows;
+    const term = search.toLowerCase();
+    return rows.filter((r) =>
+      [r.carpeta, r.codigo, r.inmueble_direccion, r.inquilino_nombre, r.propietario_nombre]
+        .filter(Boolean)
+        .some((v) => String(v).toLowerCase().includes(term)),
+    );
+  }, [rows, search]);
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="relative w-full max-w-sm">
+        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Buscar contratos..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="pl-8"
+        />
+      </div>
+      <div className="rounded-md border bg-card">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Carpeta</TableHead>
+              <TableHead>Inmueble</TableHead>
+              <TableHead>Inquilino</TableHead>
+              <TableHead>Propietario</TableHead>
+              <TableHead>Monto vigente</TableHead>
+              <TableHead>Estado</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                  Sin contratos.
+                </TableCell>
+              </TableRow>
+            )}
+            {filtered.map((row) => (
+              <TableRow key={row.id} className="cursor-pointer">
+                <TableCell>
+                  <Link href={`/contratos/${row.id}`} className="block">
+                    {row.carpeta || "-"}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/contratos/${row.id}`} className="block">
+                    {row.inmueble_direccion}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/contratos/${row.id}`} className="block">
+                    {row.inquilino_nombre}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/contratos/${row.id}`} className="block">
+                    {row.propietario_nombre}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/contratos/${row.id}`} className="block">
+                    {row.moneda} {row.monto_actual.toLocaleString("es-AR")}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Badge variant={estadoVariant[row.estado] ?? "secondary"}>{row.estado}</Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}
