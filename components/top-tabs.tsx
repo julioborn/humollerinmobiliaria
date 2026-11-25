@@ -11,7 +11,7 @@ import {
   Building2,
   Banknote,
   MoreHorizontal,
-  LayoutDashboard,
+  Home,
   BarChart3,
   Receipt,
   Settings,
@@ -34,7 +34,7 @@ const mainTabs = [
 ];
 
 const moreTabs = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/inicio", label: "Inicio", icon: Home },
   { href: "/reportes", label: "Reportes", icon: BarChart3 },
   { href: "/facturacion", label: "Facturacion", icon: Receipt },
   { href: "/configuracion", label: "Configuracion", icon: Settings },

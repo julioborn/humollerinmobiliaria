@@ -16,5 +16,5 @@ export async function login(_prevState: LoginState, formData: FormData): Promise
     return { error: "Email o contraseña incorrectos." };
   }
 
-  redirect("/dashboard");
+  redirect("/inicio");
 }
