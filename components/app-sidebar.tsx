@@ -44,8 +44,8 @@ export function AppSidebar() {
           className="rounded-md"
         />
         <div className="leading-tight">
-          <p className="text-sm font-semibold">RentaControl</p>
-          <p className="text-xs text-sidebar-foreground/70">Humoller Inmobiliaria</p>
+          <p className="text-sm font-semibold">Humoller</p>
+          <p className="text-xs text-sidebar-foreground/70">Inmobiliaria</p>
         </div>
       </div>
       <nav className="flex flex-1 flex-col gap-1 px-3 py-2">

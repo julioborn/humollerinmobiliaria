@@ -51,7 +51,7 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <PageHeader title="Dashboard" description="Resumen general de RentaControl Online." />
+      <PageHeader title="Dashboard" description="Resumen general del sistema de Humoller Inmobiliaria." />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => {
           const Icon = stat.icon;

@@ -15,8 +15,8 @@ export default function LoginPage() {
             className="rounded-md"
             priority
           />
-          <CardTitle>RentaControl Online</CardTitle>
-          <CardDescription>Humoller Inmobiliaria — acceso interno</CardDescription>
+          <CardTitle>Humoller Inmobiliaria</CardTitle>
+          <CardDescription>Acceso interno</CardDescription>
         </CardHeader>
         <CardContent>
           <LoginForm />

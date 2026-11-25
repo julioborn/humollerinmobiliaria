@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RentaControl Online | Humoller Inmobiliaria",
+  title: "Humoller Inmobiliaria",
   description: "Sistema de gestion de alquileres de Humoller Inmobiliaria",
   icons: {
     icon: "/logo-humoller.jpg",

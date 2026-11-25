@@ -1,4 +1,4 @@
-# RentaControl Online — Humoller Inmobiliaria
+# Humoller Inmobiliaria
 
 Sistema de gestion de alquileres para Humoller Inmobiliaria. Next.js 16 + Supabase.
 
