@@ -11,13 +11,19 @@ export function UserMenu({ email }: { email: string }) {
   return (
     <div className="flex items-center gap-3">
       <Avatar className="h-8 w-8">
-        <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+        <AvatarFallback className="bg-primary-foreground text-primary text-xs">
           {initials}
         </AvatarFallback>
       </Avatar>
-      <span className="hidden text-sm text-muted-foreground sm:inline">{email}</span>
+      <span className="hidden text-sm text-primary-foreground/90 sm:inline">{email}</span>
       <form action={logout}>
-        <Button type="submit" variant="ghost" size="icon" title="Cerrar sesion">
+        <Button
+          type="submit"
+          variant="ghost"
+          size="icon"
+          title="Cerrar sesion"
+          className="text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+        >
           <LogOut className="h-4 w-4" />
         </Button>
       </form>

@@ -30,7 +30,7 @@ export default async function ContratosPage() {
     <div>
       <div className="flex items-start justify-between">
         <PageHeader title="Contratos" description="Contratos de alquiler administrados." />
-        <Button render={<Link href="/contratos/nuevo" />}>
+        <Button render={<Link href="/contratos/nuevo" />} nativeButton={false}>
           <Plus className="h-4 w-4" />
           Nuevo contrato
         </Button>
