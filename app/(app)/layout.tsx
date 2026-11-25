@@ -16,16 +16,17 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex h-screen flex-col">
-      <header className="flex h-14 shrink-0 items-center justify-between border-b border-border bg-primary px-6 text-primary-foreground">
+      <header className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-primary px-6 text-primary-foreground">
         <div className="flex items-center gap-3">
           <Image
-            src="/logo-humoller.jpg"
+            src="/h-512x512.png"
             alt="Humoller Inmobiliaria"
-            width={28}
-            height={28}
+            width={44}
+            height={44}
             className="rounded-md"
+            priority
           />
-          <span className="text-sm font-semibold">Humoller Inmobiliaria</span>
+          <span className="text-base font-semibold">Humoller Inmobiliaria</span>
         </div>
         <UserMenu email={user.email ?? ""} />
       </header>

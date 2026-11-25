@@ -6,9 +6,9 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-secondary/40 p-4">
       <Card className="w-full max-w-sm">
-        <CardHeader className="items-center gap-2 text-center">
+        <CardHeader className="items-center justify-items-center gap-2 text-center">
           <Image
-            src="/logo-humoller.jpg"
+            src="/h-512x512.png"
             alt="Humoller Inmobiliaria"
             width={64}
             height={64}
