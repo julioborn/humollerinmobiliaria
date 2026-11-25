@@ -8,11 +8,10 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader className="items-center justify-items-center gap-2 text-center">
           <Image
-            src="/h-512x512.png"
+            src="/icono_simetrico_512x512.png"
             alt="Humoller Inmobiliaria"
             width={64}
             height={64}
-            className="rounded-md"
             priority
           />
           <CardTitle>Humoller Inmobiliaria</CardTitle>

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "Humoller Inmobiliaria",
   description: "Sistema de gestion de alquileres de Humoller Inmobiliaria",
   icons: {
-    icon: "/h-512x512.png",
+    icon: "/icono_simetrico_512x512.png",
   },
 };
 

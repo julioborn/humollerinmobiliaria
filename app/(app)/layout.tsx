@@ -19,11 +19,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <header className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-primary px-6 text-primary-foreground">
         <div className="flex items-center gap-3">
           <Image
-            src="/h-512x512.png"
+            src="/icono_simetrico_512x512.png"
             alt="Humoller Inmobiliaria"
             width={44}
             height={44}
-            className="rounded-md"
             priority
           />
           <span className="text-base font-semibold">Humoller Inmobiliaria</span>
