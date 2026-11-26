@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BedDouble, Ruler, MapPin } from "lucide-react";
 import { PhotoCarousel } from "@/components/photo-carousel";
 import { WhatsappButton, getWhatsappHref } from "@/components/whatsapp-button";
+import { HoverCard } from "@/components/motion/hover-card";
 
 export type PublicInmueble = {
   id: string;
@@ -18,7 +19,7 @@ export function PropertyCard({ inmueble, origin }: { inmueble: PublicInmueble; o
   const whatsappHref = getWhatsappHref(detailUrl);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
+    <HoverCard className="flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
       <Link href={`/propiedades/${inmueble.id}`} className="block">
         <PhotoCarousel photos={inmueble.photos} alt={inmueble.direccion} />
       </Link>
@@ -81,6 +82,6 @@ export function PropertyCard({ inmueble, origin }: { inmueble: PublicInmueble; o
           <WhatsappButton propertyUrl={detailUrl} className="flex-1" />
         </div>
       </div>
-    </div>
+    </HoverCard>
   );
 }

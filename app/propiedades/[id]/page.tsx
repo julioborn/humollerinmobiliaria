@@ -6,6 +6,7 @@ import { getOrigin } from "@/lib/site-url";
 import { PublicHeader } from "@/components/public-header";
 import { PhotoCarousel } from "@/components/photo-carousel";
 import { WhatsappButton, getWhatsappHref } from "@/components/whatsapp-button";
+import { Reveal } from "@/components/motion/reveal";
 
 export const revalidate = 0;
 
@@ -48,77 +49,83 @@ export default async function PropiedadDetailPage({
           Volver a propiedades
         </Link>
 
-        <PhotoCarousel
-          photos={photos}
-          alt={inmueble.direccion}
-          aspectClassName="aspect-[16/9]"
-          priority
-        />
+        <Reveal>
+          <PhotoCarousel
+            photos={photos}
+            alt={inmueble.direccion}
+            aspectClassName="aspect-[16/9]"
+            priority
+          />
+        </Reveal>
 
-        <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:justify-between">
-          <div>
-            {inmueble.tipo && (
-              <span className="text-xs font-medium uppercase tracking-wide text-primary">
-                {inmueble.tipo}
-              </span>
-            )}
-            <h1 className="mt-0.5 text-2xl font-semibold text-foreground">{inmueble.direccion}</h1>
-            {inmueble.localidad && (
-              <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                {inmueble.localidad}
-              </p>
-            )}
-            <div className="mt-3 flex items-center gap-5 text-sm text-muted-foreground">
-              {inmueble.ambientes && (
-                <span className="flex items-center gap-1.5">
-                  <BedDouble className="h-4 w-4" />
-                  {inmueble.ambientes} ambientes
+        <Reveal delay={0.1}>
+          <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:justify-between">
+            <div>
+              {inmueble.tipo && (
+                <span className="text-xs font-medium uppercase tracking-wide text-primary">
+                  {inmueble.tipo}
                 </span>
               )}
-              {inmueble.superficie && (
-                <span className="flex items-center gap-1.5">
-                  <Ruler className="h-4 w-4" />
-                  {inmueble.superficie} m²
-                </span>
+              <h1 className="mt-0.5 text-2xl font-semibold text-foreground">{inmueble.direccion}</h1>
+              {inmueble.localidad && (
+                <p className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4" />
+                  {inmueble.localidad}
+                </p>
               )}
+              <div className="mt-3 flex items-center gap-5 text-sm text-muted-foreground">
+                {inmueble.ambientes && (
+                  <span className="flex items-center gap-1.5">
+                    <BedDouble className="h-4 w-4" />
+                    {inmueble.ambientes} ambientes
+                  </span>
+                )}
+                {inmueble.superficie && (
+                  <span className="flex items-center gap-1.5">
+                    <Ruler className="h-4 w-4" />
+                    {inmueble.superficie} m²
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:items-end">
+              {whatsappHref ? (
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-2xl font-semibold text-primary hover:underline"
+                >
+                  Consultar valor
+                </a>
+              ) : (
+                <p className="text-2xl font-semibold text-foreground">Consultar valor</p>
+              )}
+              <WhatsappButton
+                propertyUrl={detailUrl}
+                label="Consultar por esta propiedad"
+                className="px-6 py-3 text-base"
+              />
             </div>
           </div>
-
-          <div className="flex flex-col gap-3 sm:items-end">
-            {whatsappHref ? (
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-2xl font-semibold text-primary hover:underline"
-              >
-                Consultar valor
-              </a>
-            ) : (
-              <p className="text-2xl font-semibold text-foreground">Consultar valor</p>
-            )}
-            <WhatsappButton
-              propertyUrl={detailUrl}
-              label="Consultar por esta propiedad"
-              className="px-6 py-3 text-base"
-            />
-          </div>
-        </div>
+        </Reveal>
 
         {inmueble.descripcion && (
-          <div className="mt-8 border-t border-border pt-6">
-            <h2 className="mb-2 text-base font-semibold text-foreground">Descripción</h2>
-            <p className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-              {inmueble.descripcion}
-            </p>
-          </div>
+          <Reveal delay={0.16}>
+            <div className="mt-8 border-t border-border pt-6">
+              <h2 className="mb-2 text-base font-semibold text-foreground">Descripción</h2>
+              <p className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+                {inmueble.descripcion}
+              </p>
+            </div>
+          </Reveal>
         )}
       </main>
 
       <footer className="border-t border-border bg-card py-6">
         <div className="mx-auto max-w-4xl px-4 text-center text-sm text-muted-foreground sm:px-6">
-          Humoller Inmobiliaria · Calchaquí, Santa Fe
+          Humoller Inmobiliaria · Alquileres y ventas
         </div>
       </footer>
     </div>

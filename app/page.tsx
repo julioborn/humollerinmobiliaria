@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getOrigin } from "@/lib/site-url";
 import { PublicHeader } from "@/components/public-header";
 import { PropertyCard, type PublicInmueble } from "@/components/property-card";
+import { Reveal } from "@/components/motion/reveal";
+import { Counter } from "@/components/motion/counter";
 
 export const revalidate = 0;
 
@@ -33,15 +35,45 @@ export default async function Home() {
     <div className="flex min-h-screen flex-col bg-background">
       <PublicHeader />
 
-      <section className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-10 sm:px-6">
-          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
-            Propiedades disponibles en Calchaquí
-          </h1>
-          <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
-            Alquileres y ventas administrados por Humoller Inmobiliaria. Elegí una propiedad y
-            consultanos directamente por WhatsApp.
-          </p>
+      <section className="relative overflow-hidden border-b border-border bg-card">
+        <div
+          aria-hidden
+          className="hero-glow pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl"
+        />
+        <div
+          aria-hidden
+          className="hero-glow pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl"
+          style={{ animationDelay: "3s" }}
+        />
+
+        <div className="relative mx-auto flex max-w-6xl flex-col gap-6 px-4 py-16 sm:px-6 sm:py-24">
+          <Reveal>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              Humoller Inmobiliaria
+            </span>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-foreground text-balance sm:text-5xl">
+              Encontrá tu próxima propiedad en alquiler o venta.
+            </h1>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
+              Gestionamos alquileres y ventas con atención personalizada. Elegí una propiedad y
+              consultanos directamente por WhatsApp.
+            </p>
+          </Reveal>
+          {listings.length > 0 && (
+            <Reveal delay={0.24}>
+              <div className="flex items-center gap-2.5 text-sm font-medium text-foreground">
+                <Building2 className="h-4 w-4 text-primary" />
+                <Counter value={listings.length} className="text-base font-semibold tabular-nums" />
+                <span className="text-muted-foreground">
+                  {listings.length === 1 ? "propiedad disponible ahora" : "propiedades disponibles ahora"}
+                </span>
+              </div>
+            </Reveal>
+          )}
         </div>
       </section>
 
@@ -55,8 +87,10 @@ export default async function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {listings.map((inmueble) => (
-              <PropertyCard key={inmueble.id} inmueble={inmueble} origin={origin} />
+            {listings.map((inmueble, index) => (
+              <Reveal key={inmueble.id} delay={Math.min(index, 5) * 0.06}>
+                <PropertyCard inmueble={inmueble} origin={origin} />
+              </Reveal>
             ))}
           </div>
         )}
@@ -64,7 +98,7 @@ export default async function Home() {
 
       <footer className="border-t border-border bg-card py-6">
         <div className="mx-auto max-w-6xl px-4 text-center text-sm text-muted-foreground sm:px-6">
-          Humoller Inmobiliaria · Calchaquí, Santa Fe
+          Humoller Inmobiliaria · Alquileres y ventas
         </div>
       </footer>
     </div>
