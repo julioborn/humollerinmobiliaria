@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# local Claude Code session state
+/.claude/
+
 # next.js
 /.next/
 /out/
