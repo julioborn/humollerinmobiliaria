@@ -68,7 +68,6 @@ export default async function InmueblesPage() {
         onCreate={createInmueble}
         onUpdate={updateInmueble}
         onDelete={deleteInmueble}
-        detailBasePath="/inmuebles"
       />
     </div>
   );

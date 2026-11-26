@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, BedDouble, Ruler, MapPin } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getOrigin } from "@/lib/site-url";
 import { PublicHeader } from "@/components/public-header";
 import { PhotoCarousel } from "@/components/photo-carousel";
@@ -26,6 +27,18 @@ export default async function PropiedadDetailPage({
     .maybeSingle();
 
   if (!inmueble) {
+    notFound();
+  }
+
+  const admin = createAdminClient();
+  const { data: contratoActivo } = await admin
+    .from("contratos")
+    .select("id")
+    .eq("inmueble_id", id)
+    .eq("estado", "activo")
+    .maybeSingle();
+
+  if (contratoActivo) {
     notFound();
   }
 

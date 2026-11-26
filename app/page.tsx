@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Building2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getOrigin } from "@/lib/site-url";
 import { PublicHeader } from "@/components/public-header";
 import { PropertyCard, type PublicInmueble } from "@/components/property-card";
@@ -13,24 +14,32 @@ export default async function Home() {
   const supabase = await createClient();
   const origin = await getOrigin();
 
-  const { data: inmuebles } = await supabase
-    .from("inmuebles")
-    .select("id, direccion, localidad, tipo, ambientes, superficie, inmueble_fotos(storage_path, orden)")
-    .eq("publicado", true)
-    .eq("estado", "disponible")
-    .order("created_at", { ascending: false });
+  const admin = createAdminClient();
+  const [{ data: inmuebles }, { data: contratosActivos }] = await Promise.all([
+    supabase
+      .from("inmuebles")
+      .select("id, direccion, localidad, tipo, ambientes, superficie, inmueble_fotos(storage_path, orden)")
+      .eq("publicado", true)
+      .eq("estado", "disponible")
+      .order("created_at", { ascending: false }),
+    admin.from("contratos").select("inmueble_id").eq("estado", "activo"),
+  ]);
 
-  const listings: PublicInmueble[] = (inmuebles ?? []).map((i) => ({
-    id: i.id,
-    direccion: i.direccion,
-    localidad: i.localidad,
-    tipo: i.tipo,
-    ambientes: i.ambientes,
-    superficie: i.superficie,
-    photos: [...(i.inmueble_fotos ?? [])]
-      .sort((a, b) => a.orden - b.orden)
-      .map((f) => supabase.storage.from("inmuebles-fotos").getPublicUrl(f.storage_path).data.publicUrl),
-  }));
+  const inmueblesConContrato = new Set((contratosActivos ?? []).map((c) => c.inmueble_id));
+
+  const listings: PublicInmueble[] = (inmuebles ?? [])
+    .filter((i) => !inmueblesConContrato.has(i.id))
+    .map((i) => ({
+      id: i.id,
+      direccion: i.direccion,
+      localidad: i.localidad,
+      tipo: i.tipo,
+      ambientes: i.ambientes,
+      superficie: i.superficie,
+      photos: [...(i.inmueble_fotos ?? [])]
+        .sort((a, b) => a.orden - b.orden)
+        .map((f) => supabase.storage.from("inmuebles-fotos").getPublicUrl(f.storage_path).data.publicUrl),
+    }));
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -61,23 +70,18 @@ export default async function Home() {
 
         <div className="relative mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 sm:px-6 sm:py-12">
           <Reveal>
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-              Humoller Inmobiliaria
-            </span>
-          </Reveal>
-          <Reveal delay={0.08}>
             <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-foreground text-balance sm:text-5xl">
               Encontrá tu próxima propiedad en alquiler o venta.
             </h1>
           </Reveal>
-          <Reveal delay={0.16}>
+          <Reveal delay={0.08}>
             <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
               Gestionamos alquileres y ventas con atención personalizada. Elegí una propiedad y
               consultanos directamente por WhatsApp.
             </p>
           </Reveal>
           {listings.length > 0 && (
-            <Reveal delay={0.24}>
+            <Reveal delay={0.16}>
               <div className="flex items-center gap-2.5 text-sm font-medium text-foreground">
                 <Building2 className="h-4 w-4 text-primary" />
                 <Counter value={listings.length} className="text-base font-semibold tabular-nums" />
