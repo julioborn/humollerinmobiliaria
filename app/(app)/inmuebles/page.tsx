@@ -68,7 +68,7 @@ export default async function InmueblesPage() {
         onCreate={createInmueble}
         onUpdate={updateInmueble}
         onDelete={deleteInmueble}
-        detailHref={(row) => `/inmuebles/${row.id}`}
+        detailBasePath="/inmuebles"
       />
     </div>
   );

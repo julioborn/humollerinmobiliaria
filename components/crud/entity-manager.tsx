@@ -79,7 +79,7 @@ export function EntityManager({
   onCreate,
   onUpdate,
   onDelete,
-  detailHref,
+  detailBasePath,
   detailLabel = "Gestionar publicacion",
 }: {
   entityLabel: string;
@@ -90,8 +90,8 @@ export function EntityManager({
   onCreate: (formData: FormData) => Promise<ActionResult>;
   onUpdate: (id: string, formData: FormData) => Promise<ActionResult>;
   onDelete: (id: string) => Promise<ActionResult>;
-  /** When set, adds a row action linking to this URL (e.g. a detail/sub-management page). */
-  detailHref?: (row: Record<string, unknown>) => string;
+  /** When set, adds a row action linking to `${detailBasePath}/${row.id}` (e.g. a detail/sub-management page). */
+  detailBasePath?: string;
   detailLabel?: string;
 }) {
   const [search, setSearch] = useState("");
@@ -218,8 +218,10 @@ export function EntityManager({
                       <MoreHorizontal className="h-4 w-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      {detailHref && (
-                        <DropdownMenuItem render={<Link href={detailHref(row)} />}>
+                      {detailBasePath && (
+                        <DropdownMenuItem
+                          render={<Link href={`${detailBasePath}/${row.id as string}`} />}
+                        >
                           <Settings className="h-4 w-4" />
                           {detailLabel}
                         </DropdownMenuItem>
