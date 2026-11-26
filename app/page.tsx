@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Building2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getOrigin } from "@/lib/site-url";
@@ -45,6 +46,18 @@ export default async function Home() {
           className="hero-glow pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl"
           style={{ animationDelay: "3s" }}
         />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 right-0 hidden -translate-y-1/2 translate-x-1/4 sm:block"
+        >
+          <Image
+            src="/icono_simetrico_512x512.png"
+            alt=""
+            width={380}
+            height={380}
+            className="opacity-10 blur-sm"
+          />
+        </div>
 
         <div className="relative mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 sm:px-6 sm:py-12">
           <Reveal>

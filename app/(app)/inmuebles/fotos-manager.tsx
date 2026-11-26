@@ -2,8 +2,9 @@
 
 import { useRef, useState, useTransition } from "react";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, ArrowRight, GripVertical, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -25,8 +26,15 @@ export function FotosManager({
   onReorder: (inmuebleId: string, orderedIds: string[]) => Promise<ActionResult>;
 }) {
   const [isPending, startTransition] = useTransition();
+  const [prevFotos, setPrevFotos] = useState(fotos);
   const [ordered, setOrdered] = useState(fotos);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  if (fotos !== prevFotos) {
+    setPrevFotos(fotos);
+    setOrdered(fotos);
+  }
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -57,11 +65,11 @@ export function FotosManager({
     });
   }
 
-  function move(index: number, direction: -1 | 1) {
-    const target = index + direction;
-    if (target < 0 || target >= ordered.length) return;
+  function reorder(from: number, to: number) {
+    if (from === to || from < 0 || to < 0 || to >= ordered.length) return;
     const next = [...ordered];
-    [next[index], next[target]] = [next[target], next[index]];
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved);
     setOrdered(next);
     startTransition(async () => {
       const result = await onReorder(inmuebleId, next.map((f) => f.id));
@@ -100,7 +108,27 @@ export function FotosManager({
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {ordered.map((foto, index) => (
-              <div key={foto.id} className="flex flex-col gap-2 rounded-md border border-border p-2">
+              <div
+                key={foto.id}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={() => {
+                  if (dragIndex !== null) reorder(dragIndex, index);
+                  setDragIndex(null);
+                }}
+                className={cn(
+                  "flex flex-col gap-2 rounded-md border border-border p-2 transition-opacity",
+                  dragIndex === index && "opacity-40",
+                )}
+              >
+                <span
+                  draggable
+                  onDragStart={() => setDragIndex(index)}
+                  onDragEnd={() => setDragIndex(null)}
+                  className="hidden w-fit cursor-grab items-center gap-1 text-xs text-muted-foreground active:cursor-grabbing sm:flex"
+                >
+                  <GripVertical className="h-3.5 w-3.5" />
+                  Arrastrar para ordenar
+                </span>
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-muted">
                   <Image src={foto.url} alt="" fill className="object-cover" />
                 </div>
@@ -111,7 +139,7 @@ export function FotosManager({
                       variant="ghost"
                       size="icon"
                       disabled={isPending || index === 0}
-                      onClick={() => move(index, -1)}
+                      onClick={() => reorder(index, index - 1)}
                     >
                       <ArrowLeft className="h-4 w-4" />
                     </Button>
@@ -120,7 +148,7 @@ export function FotosManager({
                       variant="ghost"
                       size="icon"
                       disabled={isPending || index === ordered.length - 1}
-                      onClick={() => move(index, 1)}
+                      onClick={() => reorder(index, index + 1)}
                     >
                       <ArrowRight className="h-4 w-4" />
                     </Button>
