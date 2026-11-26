@@ -90,7 +90,7 @@ export function ContratosTable({ rows }: { rows: ContratoRow[] }) {
                   key={row.id}
                   className={cn(
                     "cursor-pointer",
-                    prontoAVencer && "bg-destructive/5 hover:bg-destructive/10",
+                    prontoAVencer && "bg-destructive/10 hover:bg-destructive/15",
                   )}
                 >
                   <TableCell>

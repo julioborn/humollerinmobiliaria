@@ -168,7 +168,7 @@ export default async function InicioPage() {
                   {vencenPronto.map((c) => {
                     const dias = diasRestantes(c.fecha_fin!);
                     return (
-                      <TableRow key={c.id}>
+                      <TableRow key={c.id} className="bg-destructive/10 hover:bg-destructive/15">
                         <TableCell className="font-medium text-foreground">
                           <Link href={`/contratos/${c.id}`} className="block">
                             {c.inmuebles?.direccion ?? "-"}
