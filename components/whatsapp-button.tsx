@@ -3,6 +3,13 @@ import { cn } from "@/lib/utils";
 
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
+/** Builds the wa.me link for a property, or null if no number is configured yet. */
+export function getWhatsappHref(propertyUrl: string) {
+  if (!WHATSAPP_NUMBER) return null;
+  const message = `Hola! Me interesó esta publicación: ${propertyUrl}`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
 export function WhatsappButton({
   propertyUrl,
   label = "Consultar",
@@ -12,10 +19,8 @@ export function WhatsappButton({
   label?: string;
   className?: string;
 }) {
-  if (!WHATSAPP_NUMBER) return null;
-
-  const message = `Hola! Me interesó esta publicación: ${propertyUrl}`;
-  const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  const href = getWhatsappHref(propertyUrl);
+  if (!href) return null;
 
   return (
     <a

@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { BedDouble, Ruler, MapPin } from "lucide-react";
 import { PhotoCarousel } from "@/components/photo-carousel";
-import { WhatsappButton } from "@/components/whatsapp-button";
-import { formatARS } from "@/lib/format";
+import { WhatsappButton, getWhatsappHref } from "@/components/whatsapp-button";
 
 export type PublicInmueble = {
   id: string;
@@ -11,12 +10,12 @@ export type PublicInmueble = {
   tipo: string | null;
   ambientes: number | null;
   superficie: number | null;
-  precio: number | null;
   photos: string[];
 };
 
 export function PropertyCard({ inmueble, origin }: { inmueble: PublicInmueble; origin: string }) {
   const detailUrl = `${origin}/propiedades/${inmueble.id}`;
+  const whatsappHref = getWhatsappHref(detailUrl);
 
   return (
     <div className="flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
@@ -59,9 +58,18 @@ export function PropertyCard({ inmueble, origin }: { inmueble: PublicInmueble; o
           </div>
         )}
 
-        <p className="text-lg font-semibold text-foreground">
-          {inmueble.precio ? formatARS(inmueble.precio) : "Consultar valor"}
-        </p>
+        {whatsappHref ? (
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-lg font-semibold text-primary hover:underline"
+          >
+            Consultar valor
+          </a>
+        ) : (
+          <p className="text-lg font-semibold text-foreground">Consultar valor</p>
+        )}
 
         <div className="mt-auto flex items-center gap-2 pt-1">
           <Link

@@ -5,8 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getOrigin } from "@/lib/site-url";
 import { PublicHeader } from "@/components/public-header";
 import { PhotoCarousel } from "@/components/photo-carousel";
-import { WhatsappButton } from "@/components/whatsapp-button";
-import { formatARS } from "@/lib/format";
+import { WhatsappButton, getWhatsappHref } from "@/components/whatsapp-button";
 
 export const revalidate = 0;
 
@@ -34,6 +33,7 @@ export default async function PropiedadDetailPage({
     .map((f) => supabase.storage.from("inmuebles-fotos").getPublicUrl(f.storage_path).data.publicUrl);
 
   const detailUrl = `${origin}/propiedades/${id}`;
+  const whatsappHref = getWhatsappHref(detailUrl);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -86,9 +86,18 @@ export default async function PropiedadDetailPage({
           </div>
 
           <div className="flex flex-col gap-3 sm:items-end">
-            <p className="text-2xl font-semibold text-foreground">
-              {inmueble.precio ? formatARS(inmueble.precio) : "Consultar valor"}
-            </p>
+            {whatsappHref ? (
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-2xl font-semibold text-primary hover:underline"
+              >
+                Consultar valor
+              </a>
+            ) : (
+              <p className="text-2xl font-semibold text-foreground">Consultar valor</p>
+            )}
             <WhatsappButton
               propertyUrl={detailUrl}
               label="Consultar por esta propiedad"

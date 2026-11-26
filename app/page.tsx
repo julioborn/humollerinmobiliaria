@@ -12,7 +12,7 @@ export default async function Home() {
 
   const { data: inmuebles } = await supabase
     .from("inmuebles")
-    .select("id, direccion, localidad, tipo, ambientes, superficie, precio, inmueble_fotos(storage_path, orden)")
+    .select("id, direccion, localidad, tipo, ambientes, superficie, inmueble_fotos(storage_path, orden)")
     .eq("publicado", true)
     .eq("estado", "disponible")
     .order("created_at", { ascending: false });
@@ -24,7 +24,6 @@ export default async function Home() {
     tipo: i.tipo,
     ambientes: i.ambientes,
     superficie: i.superficie,
-    precio: i.precio,
     photos: [...(i.inmueble_fotos ?? [])]
       .sort((a, b) => a.orden - b.orden)
       .map((f) => supabase.storage.from("inmuebles-fotos").getPublicUrl(f.storage_path).data.publicUrl),
