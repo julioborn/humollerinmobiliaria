@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,6 +63,8 @@ export type EntityColumn = {
   key: string;
   label: string;
   badgeMap?: Record<string, string>;
+  /** When set, renders the value as a link that opens Google Maps, with this text appended to the search query. */
+  mapsQuerySuffix?: string;
 };
 
 type ActionResult = { error?: string; success?: boolean };
@@ -177,17 +179,33 @@ export function EntityManager({
             )}
             {filteredRows.map((row) => (
               <TableRow key={row.id as string}>
-                {columns.map((col) => (
-                  <TableCell key={col.key}>
-                    {col.badgeMap ? (
-                      <Badge variant="secondary">
-                        {col.badgeMap[String(row[col.key])] ?? String(row[col.key] ?? "-")}
-                      </Badge>
-                    ) : (
-                      String(row[col.key] ?? "-")
-                    )}
-                  </TableCell>
-                ))}
+                {columns.map((col) => {
+                  const value = row[col.key];
+                  return (
+                    <TableCell key={col.key}>
+                      {col.badgeMap ? (
+                        <Badge variant="secondary">
+                          {col.badgeMap[String(value)] ?? String(value ?? "-")}
+                        </Badge>
+                      ) : col.mapsQuerySuffix && value ? (
+                        <a
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                            `${String(value)}, ${col.mapsQuerySuffix}`,
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1.5 text-primary hover:underline"
+                        >
+                          <MapPin className="h-3.5 w-3.5 shrink-0" />
+                          {String(value)}
+                        </a>
+                      ) : (
+                        String(value ?? "-")
+                      )}
+                    </TableCell>
+                  );
+                })}
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger render={<Button variant="ghost" size="icon" />}>
