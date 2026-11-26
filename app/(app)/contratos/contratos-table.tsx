@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -28,9 +29,9 @@ type ContratoRow = {
   propietario_nombre: string;
 };
 
-const estadoVariant: Record<string, "default" | "secondary" | "destructive"> = {
-  activo: "default",
-  finalizado: "secondary",
+const estadoVariant: Record<string, "success" | "destructive"> = {
+  activo: "success",
+  finalizado: "destructive",
   rescindido: "destructive",
 };
 
@@ -85,7 +86,13 @@ export function ContratosTable({ rows }: { rows: ContratoRow[] }) {
               const dias = row.fecha_fin ? diasRestantes(row.fecha_fin) : null;
               const prontoAVencer = row.estado === "activo" && dias !== null && dias <= PRONTO_DIAS;
               return (
-                <TableRow key={row.id} className="cursor-pointer">
+                <TableRow
+                  key={row.id}
+                  className={cn(
+                    "cursor-pointer",
+                    prontoAVencer && "bg-destructive/5 hover:bg-destructive/10",
+                  )}
+                >
                   <TableCell>
                     <Link href={`/contratos/${row.id}`} className="block">
                       {row.carpeta || "-"}
