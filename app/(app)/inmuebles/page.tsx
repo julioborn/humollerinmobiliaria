@@ -26,11 +26,7 @@ export default async function InmueblesPage() {
   }));
 
   const columns: EntityColumn[] = [
-    {
-      key: "direccion",
-      label: "Direccion",
-      mapsQuerySuffix: "Calchaqui, Santa Fe, Argentina, 3050",
-    },
+    { key: "direccion", label: "Direccion" },
     { key: "localidad", label: "Localidad" },
     { key: "tipo", label: "Tipo" },
     { key: "propietario_nombre", label: "Propietario" },
