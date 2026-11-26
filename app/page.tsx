@@ -46,7 +46,7 @@ export default async function Home() {
           style={{ animationDelay: "3s" }}
         />
 
-        <div className="relative mx-auto flex max-w-6xl flex-col gap-6 px-4 py-16 sm:px-6 sm:py-24">
+        <div className="relative mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 sm:px-6 sm:py-12">
           <Reveal>
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               Humoller Inmobiliaria
