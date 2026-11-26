@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { Plus, Pencil, Trash2, Search, MapPin } from "lucide-react";
+import Link from "next/link";
+import { Plus, Pencil, Trash2, Search, MapPin, Settings } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,6 +79,8 @@ export function EntityManager({
   onCreate,
   onUpdate,
   onDelete,
+  detailHref,
+  detailLabel = "Gestionar publicacion",
 }: {
   entityLabel: string;
   entityLabelPlural: string;
@@ -87,6 +90,9 @@ export function EntityManager({
   onCreate: (formData: FormData) => Promise<ActionResult>;
   onUpdate: (id: string, formData: FormData) => Promise<ActionResult>;
   onDelete: (id: string) => Promise<ActionResult>;
+  /** When set, adds a row action linking to this URL (e.g. a detail/sub-management page). */
+  detailHref?: (row: Record<string, unknown>) => string;
+  detailLabel?: string;
 }) {
   const [search, setSearch] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -212,6 +218,12 @@ export function EntityManager({
                       <MoreHorizontal className="h-4 w-4" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
+                      {detailHref && (
+                        <DropdownMenuItem render={<Link href={detailHref(row)} />}>
+                          <Settings className="h-4 w-4" />
+                          {detailLabel}
+                        </DropdownMenuItem>
+                      )}
                       <DropdownMenuItem onClick={() => openEdit(row)}>
                         <Pencil className="h-4 w-4" />
                         Editar

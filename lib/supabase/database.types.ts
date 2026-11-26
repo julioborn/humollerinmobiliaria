@@ -286,16 +286,51 @@ export type Database = {
         }
         Relationships: []
       }
+      inmueble_fotos: {
+        Row: {
+          created_at: string
+          id: string
+          inmueble_id: string
+          orden: number
+          storage_path: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          inmueble_id: string
+          orden?: number
+          storage_path: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          inmueble_id?: string
+          orden?: number
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inmueble_fotos_inmueble_id_fkey"
+            columns: ["inmueble_id"]
+            isOneToOne: false
+            referencedRelation: "inmuebles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inmuebles: {
         Row: {
           ambientes: number | null
           created_at: string
+          descripcion: string | null
           direccion: string
           estado: Database["public"]["Enums"]["inmueble_estado"]
           id: string
           localidad: string | null
           notas: string | null
+          precio: number | null
           propietario_id: string | null
+          publicado: boolean
           superficie: number | null
           tipo: string | null
           updated_at: string
@@ -303,12 +338,15 @@ export type Database = {
         Insert: {
           ambientes?: number | null
           created_at?: string
+          descripcion?: string | null
           direccion: string
           estado?: Database["public"]["Enums"]["inmueble_estado"]
           id?: string
           localidad?: string | null
           notas?: string | null
+          precio?: number | null
           propietario_id?: string | null
+          publicado?: boolean
           superficie?: number | null
           tipo?: string | null
           updated_at?: string
@@ -316,12 +354,15 @@ export type Database = {
         Update: {
           ambientes?: number | null
           created_at?: string
+          descripcion?: string | null
           direccion?: string
           estado?: Database["public"]["Enums"]["inmueble_estado"]
           id?: string
           localidad?: string | null
           notas?: string | null
+          precio?: number | null
           propietario_id?: string | null
+          publicado?: boolean
           superficie?: number | null
           tipo?: string | null
           updated_at?: string
