@@ -31,7 +31,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <UserMenu email={user.email ?? ""} />
       </header>
       <TopTabs />
-      <main className="min-h-0 flex-1 overflow-y-auto bg-background p-6">{children}</main>
+      <main className="min-h-0 flex-1 overflow-auto bg-background p-6">{children}</main>
     </div>
   );
 }
