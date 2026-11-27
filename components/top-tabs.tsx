@@ -55,25 +55,31 @@ export function TopTabs() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex h-[54px] items-stretch overflow-x-auto border-b border-border bg-card px-4">
-      {tabs.map((tab) => {
-        const active = isActive(pathname, tab.href);
-        return (
-          <Link
-            key={tab.href}
-            href={tab.href}
-            className={cn(
-              "relative flex h-full shrink-0 items-center gap-2 px-3 text-[15px] font-medium transition-colors active:translate-y-px",
-              "after:absolute after:inset-x-3 after:bottom-0 after:h-[3px] after:rounded-full after:transition-colors",
-              active
-                ? "text-foreground after:bg-primary"
-                : "text-muted-foreground after:bg-transparent hover:text-foreground",
-            )}
-          >
-            <TabContent label={tab.label} icon={tab.icon} active={active} />
-          </Link>
-        );
-      })}
-    </nav>
+    <div className="relative border-b border-border bg-card">
+      <nav className="flex h-[54px] items-stretch overflow-x-auto px-4">
+        {tabs.map((tab) => {
+          const active = isActive(pathname, tab.href);
+          return (
+            <Link
+              key={tab.href}
+              href={tab.href}
+              className={cn(
+                "relative flex h-full shrink-0 items-center gap-2 px-3 text-[15px] font-medium transition-colors active:translate-y-px",
+                "after:absolute after:inset-x-3 after:bottom-0 after:h-[3px] after:rounded-full after:transition-colors",
+                active
+                  ? "text-foreground after:bg-primary"
+                  : "text-muted-foreground after:bg-transparent hover:text-foreground",
+              )}
+            >
+              <TabContent label={tab.label} icon={tab.icon} active={active} />
+            </Link>
+          );
+        })}
+      </nav>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-card to-transparent lg:hidden"
+      />
+    </div>
   );
 }

@@ -149,8 +149,8 @@ export function EntityManager({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-4">
-        <div className="relative w-full max-w-sm">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+        <div className="relative w-full sm:max-w-sm">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder={`Buscar ${entityLabelPlural.toLowerCase()}...`}
@@ -159,7 +159,7 @@ export function EntityManager({
             className="pl-8"
           />
         </div>
-        <Button onClick={openCreate}>
+        <Button onClick={openCreate} className="w-full sm:w-auto">
           <Plus className="h-4 w-4" />
           Nuevo {entityLabel}
         </Button>
