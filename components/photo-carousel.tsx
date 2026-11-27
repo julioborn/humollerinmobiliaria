@@ -33,7 +33,7 @@ export function PhotoCarousel({
   }
 
   return (
-    <div className={cn("group relative w-full overflow-hidden rounded-md bg-muted", aspectClassName)}>
+    <div className={cn("relative w-full overflow-hidden rounded-md bg-muted", aspectClassName)}>
       <Image
         src={photos[index]}
         alt={alt}
@@ -48,9 +48,9 @@ export function PhotoCarousel({
             type="button"
             aria-label="Foto anterior"
             onClick={(e) => go(-1, e)}
-            className="absolute inset-y-0 left-0 flex w-9 items-center justify-center text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+            className="absolute inset-y-0 left-0 flex w-9 items-center justify-center text-white"
           >
-            <span className="flex size-7 items-center justify-center rounded-full bg-black/40">
+            <span className="flex size-7 items-center justify-center rounded-full bg-black/40 transition-colors hover:bg-black/60">
               <ChevronLeft className="h-4 w-4" />
             </span>
           </button>
@@ -58,9 +58,9 @@ export function PhotoCarousel({
             type="button"
             aria-label="Foto siguiente"
             onClick={(e) => go(1, e)}
-            className="absolute inset-y-0 right-0 flex w-9 items-center justify-center text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+            className="absolute inset-y-0 right-0 flex w-9 items-center justify-center text-white"
           >
-            <span className="flex size-7 items-center justify-center rounded-full bg-black/40">
+            <span className="flex size-7 items-center justify-center rounded-full bg-black/40 transition-colors hover:bg-black/60">
               <ChevronRight className="h-4 w-4" />
             </span>
           </button>
