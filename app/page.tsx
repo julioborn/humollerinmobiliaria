@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Building2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -41,6 +42,8 @@ export default async function Home() {
         .map((f) => supabase.storage.from("inmuebles-fotos").getPublicUrl(f.storage_path).data.publicUrl),
     }));
 
+  const featured = listings.find((l) => l.photos.length > 0);
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <PublicHeader />
@@ -55,40 +58,71 @@ export default async function Home() {
           className="hero-glow pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl"
           style={{ animationDelay: "3s" }}
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute top-1/2 right-0 hidden -translate-y-1/2 translate-x-1/4 sm:block"
-        >
-          <Image
-            src="/icono_simetrico_512x512.png"
-            alt=""
-            width={380}
-            height={380}
-            className="opacity-10 blur-sm"
-          />
-        </div>
+        {!featured && (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-1/2 right-0 hidden -translate-y-1/2 translate-x-1/4 sm:block"
+          >
+            <Image
+              src="/icono_simetrico_512x512.png"
+              alt=""
+              width={380}
+              height={380}
+              className="opacity-10 blur-sm"
+            />
+          </div>
+        )}
 
-        <div className="relative mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 sm:px-6 sm:py-12">
-          <Reveal>
-            <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-foreground text-balance sm:text-5xl">
-              Encontrá tu próxima propiedad en alquiler o venta.
-            </h1>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
-              Gestionamos alquileres y ventas con atención personalizada. Elegí una propiedad y
-              consultanos directamente por WhatsApp.
-            </p>
-          </Reveal>
-          {listings.length > 0 && (
-            <Reveal delay={0.16}>
-              <div className="flex items-center gap-2.5 text-sm font-medium text-foreground">
-                <Building2 className="h-4 w-4 text-primary" />
-                <Counter value={listings.length} className="text-base font-semibold tabular-nums" />
-                <span className="text-muted-foreground">
-                  {listings.length === 1 ? "propiedad disponible ahora" : "propiedades disponibles ahora"}
-                </span>
-              </div>
+        <div className="relative mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 sm:px-6 sm:py-12 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+          <div className="flex flex-col gap-4">
+            <Reveal>
+              <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-foreground text-balance sm:text-5xl">
+                Encontrá tu próxima propiedad en alquiler o venta.
+              </h1>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
+                Gestionamos alquileres y ventas con atención personalizada. Elegí una propiedad y
+                consultanos directamente por WhatsApp.
+              </p>
+            </Reveal>
+            {listings.length > 0 && (
+              <Reveal delay={0.16}>
+                <div className="flex items-center gap-2.5 text-sm font-medium text-foreground">
+                  <Building2 className="h-4 w-4 text-primary" />
+                  <Counter value={listings.length} className="text-base font-semibold tabular-nums" />
+                  <span className="text-muted-foreground">
+                    {listings.length === 1 ? "propiedad disponible ahora" : "propiedades disponibles ahora"}
+                  </span>
+                </div>
+              </Reveal>
+            )}
+          </div>
+
+          {featured && (
+            <Reveal delay={0.2} className="hidden shrink-0 lg:block">
+              <Link
+                href={`/propiedades/${featured.id}`}
+                className="group relative block w-[300px] overflow-hidden rounded-2xl shadow-xl xl:w-[360px]"
+                style={{ aspectRatio: "4 / 5" }}
+              >
+                <Image
+                  src={featured.photos[0]}
+                  alt={featured.direccion}
+                  fill
+                  priority
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="360px"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-10">
+                  {featured.tipo && (
+                    <p className="text-xs font-medium uppercase tracking-wide text-white/80">
+                      {featured.tipo}
+                    </p>
+                  )}
+                  <p className="text-sm font-semibold text-white">{featured.direccion}</p>
+                </div>
+              </Link>
             </Reveal>
           )}
         </div>
